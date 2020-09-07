@@ -7,52 +7,28 @@ class SearchController < ApplicationController
     @datas = search_for(@how, @model, @content)
   end
 
-
   private
-  #完全一致
-  def match(model, content)
-    if model == 'user'
-      User.where(name: content)
-    elsif model == 'book'
-      Book.where(title: content)
-    end
-  end
-#前方一致
-  def forward(model, content)
-    if model == 'user'
-      User.where("name LIKE ?", "#{content}%")
-    elsif model == 'book'
-      Book.where("title LIKE ?", "#{content}%")
-    end
-  end
-#後方一致
-  def backward(model, content)
-    if model == 'user'
-      User.where("name LIKE ?", "%#{content}")
-    elsif model == 'book'
-      Book.where("title LIKE ?", "%#{content}")
-    end
-  end
-
-#部分一致
-  def partical(model, content)
-    if model == 'user'
-      User.where("name LIKE ?", "%#{content}%")
-    elsif model == 'book'
-      Book.where("title LIKE ?", "%#{content}%")
-    end
-  end
-
-  def search_for(how, model, content)
-    case how
-    when 'match'
-      match(model, content)
-    when 'forward'
-      forward(model, content)
-    when 'backward'
-      backward(model, content)
-    when 'partical'
-      partical(model, content)
+  def search_for(model, content, how)
+    if model == "user"
+      if how == "perfect" #完全一致
+        User.where(name: content)
+      elsif how == "forward" #前方一致
+        User.where("name LIKE ?", "#{content}%")
+      elsif how == "backward" #後方一致
+        User.where("name LIKE ?", "%#{content}")
+      else #部分一致
+        User.where("name LIKE ?", "%#{content}%")
+      end
+    elsif model == "book"
+      if how == "perfect"
+        Book.where(title: content)
+      elsif how == "forward"
+        Book.where("title LIKE ?", "#{content}%")
+      elsif how == "backward"
+        Book.where("title LIKE ?", "%#{content}")
+      else
+        Book.where("title LIKE ?", "%#{content}%")
+      end
     end
   end
 end

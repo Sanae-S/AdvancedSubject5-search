@@ -1,0 +1,16 @@
+<% if book.favorited_by?(current_user) %>
+  <p class="favorite_icon">
+    <!-- js形式のリクエストを送信するために、"remote: true"をつける -->
+    <%= link_to "/books/#{book.id}/favorites", method: :delete, remote: true do %>
+      <i class="fas fa-heart" aria-hidden="true" style="color: red;"></i>
+      <%= book.favorites.count %>
+    <% end %>
+  </p>
+<% else %>
+  <p class="favorite_icon">
+    <%= link_to "/books/#{book.id}/favorites", method: :post, remote: true do %>
+      <i class="fa fa-heart-o" aria-hidden="true"></i>
+      <%= book.favorites.count %>
+    <% end %>
+  </p>
+<% end %>

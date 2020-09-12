@@ -15,7 +15,7 @@
             <%= attachment_image_tag(book.user, :profile_image, :fill, 50, 50, fallback: "no_image.jpg") %>
           <% end %>
         </td>
-        <td><%= link_to "/books/#{book.id}",data: {"turbolinks" => false}, method: :get, class: "book_#{book.id}" do %>
+        <td><%= link_to book_path(book),data: {"turbolinks" => false}, method: :get, class: "book_#{book.id}" do %>
           <%=  book.title %>
           <% end %>
         </td>
@@ -26,7 +26,9 @@
         <td>
           <ul class="inline-meta">
             <p>
-              <%= link_to "#{book.book_comments.count} コメント", "/books/#{book.id}" %>
+              <%= link_to book_path(book.id) do %>
+                <%= "#{book.book_comments.count} コメント" %>
+              <% end %>
             </p>
           </ul>
         </td>
